@@ -14,6 +14,13 @@ router.get('/addnewproduct', homeController.addnewproductFunction);
 router.get('/bulkimport', homeController.bulkimportFunction);
 router.get('/bulkexport', homeController.bulkexportFunction);
 router.get('/message', homeController.messageFunction);
+router.get('/salesreport', homeController.salesreportFunction);
+router.get('/orderreport', homeController.orderreportFunction);
+router.get('/earningreport', homeController.earningreportFunction);
+router.get('/expensereport', homeController.expensereportFunction);
+router.get('/customersearch', homeController.customersearchFunction);
+router.get('/keywordsearch', homeController.keywordsearchFunction);
+
 router.get('/login', homeController.loginFunction);
 router.get('/users', homeController.getAllUser);
 router.post('/users', homeController.createUser);

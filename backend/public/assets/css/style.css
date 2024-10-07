@@ -5514,8 +5514,9 @@ input[type=button].btn-block {
   word-wrap: break-word;
   background-color: #ffffff;
   background-clip: border-box;
-  border: 1px solid #e5e9f2;
+  border: 1px solid #F4F5F7 !important;
   border-radius: 0.25rem;
+  box-shadow: 0px 0px 2px 0px #F4F5F7 !important;
 }
 
 .card>hr {

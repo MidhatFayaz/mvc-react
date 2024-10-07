@@ -105,6 +105,49 @@ exports.messageFunction = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.salesreportFunction = async (req, res) => {
+  try {
+    res.render('salesreport');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.orderreportFunction = async (req, res) => {
+  try {
+    res.render('orderreport');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.earningreportFunction = async (req, res) => {
+  try {
+    res.render('earningreport');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.expensereportFunction = async (req, res) => {
+  try {
+    res.render('expensereport');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.customersearchFunction = async (req, res) => {
+  try {
+    res.render('customersearch');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.keywordsearchFunction = async (req, res) => {
+  try {
+    res.render('keywordsearch');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.loginFunction = async (req, res) => {
   try {
     res.render('login');
