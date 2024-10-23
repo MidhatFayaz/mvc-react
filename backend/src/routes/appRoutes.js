@@ -1,10 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const homeController = require('../controllers/homeController');
+const multer = require('multer');
+const path =require('path')
+// Configure multer for file storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+// Middleware for handling image uploads
+const upload = multer({ storage: storage });
+
+
 
 //Home Routing 
 router.get('/', homeController.indexFunction);
 router.get('/category', homeController.categoryFunction);
+router.post('/category',upload.single('image'),homeController.categoryFunction1);
+router.delete('/category', homeController.categoryFunction2);
 router.get('/subcategory', homeController.subcategoryFunction);
 router.get('/productattribute', homeController.productattributeFunction);
 router.get('/editattribute', homeController.editattributeFunction);
@@ -20,6 +38,7 @@ router.get('/earningreport', homeController.earningreportFunction);
 router.get('/expensereport', homeController.expensereportFunction);
 router.get('/customersearch', homeController.customersearchFunction);
 router.get('/keywordsearch', homeController.keywordsearchFunction);
+// router.get('/businesssetup', homeController.businesssetupFunction);
 
 router.get('/login', homeController.loginFunction);
 router.get('/users', homeController.getAllUser);

@@ -1,37 +1,27 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const routLink=require("./src/routes/appRoutes")//import router
-const cors = require("cors");
-
-
-
-const corsOptions = {
-  origin: "http://localhost:5173",
-};
-
+const routLink = require("./src/routes/appRoutes"); // Import router
+const path = require('path');
 const app = express();
 const port = 3000;
 
-app.set('view engine', 'ejs'); // Set EJS as templating engine 
-app.set('views',__dirname+'\\src\\views'); //set views folder for html
-app.use(express.static(__dirname + '/public'));
+// Set EJS as templating engine
+app.set('view engine', 'ejs'); // view engine means template engine
+app.set('views', path.join(__dirname, 'src', 'views')); // Set views folder for EJS
 
-app.use(cors(corsOptions));//allow cors Origen 
+// Serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 
-mongoose.connect('mongodb://localhost:27017/mydb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}); //mongo db connection
+const bodyParser = require('body-parser');
+// Middleware to parse request body
+// app.use(express.urlencoded({ extended: true }));
 
-var conn = mongoose.connection;
-conn.on('connected', function() {
-    console.log('database is connected successfully');
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// Use the imported router for handling routes
+app.use('/', routLink);
 
-app.use(express.json());
-app.use('/', routLink); //router prefix
-
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

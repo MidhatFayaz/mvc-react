@@ -187,15 +187,17 @@
                 <!-- <a href="#" class="link-underline-primary text-dark">English -->
               </div>
 
-              <form action="/category/store" method="post" enctype="multipart/form-data" class=" form">
+              <form id="form" novalidate method="POST" class="form" enctype="multipart/form-data">
 
                 <input type="hidden" name="hidden" value="qwertyuiopasdfghjklzxcvbnm">
+
                 <div class="row align-items-end g-4">
                   <div class="col-sm-6 ">
                     <label class="form-label" for="one">Category Name
                       (EN)</label>
                     <input type="text" name="name" id="one" class="form-control" placeholder="Ex: Size" maxlength="255"
                       required autocomplete="off">
+                    <small id="name_error" class="text-danger"></small>
                   </div>
 
                   <div class="col-sm-6">
@@ -210,7 +212,7 @@
                       Ratio3:1 )</small>
                     <div class="custom-file">
                       <input type="file" name="image" class="custom-file-input" id="two"
-                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" required>
+                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
                       <label class="custom-file-label" for="two">Choose
                         File</label>
                     </div>
@@ -226,11 +228,11 @@
             </form>
             <div class=" border border-1 form ">
               <h4 class="card-title">Category Table <span class="badge badge-soft-secondary">8</span></h4>
-              <form action="/category/add" method="get" class="d-flex justify-content-end">
+              <form action="/category" method="post" class="d-flex justify-content-end">
 
                 <div class="d-flex col-6 m-2">
 
-                  <input type="search" name="searchcategory" placeholder="Search" required
+                  <input type="text" name="searchcategory" placeholder="Search" required
                     class="form-control rounded-start px-4 py-2  border" aria-label="Search" autocomplete="off"
                     id="search_category" maxlength="255">
                   <button type="submit" class="rounded-end  px-4 py-2  btn--primary  ">
@@ -252,57 +254,74 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="text-center">1</td>
-                    <td>
-                      <img
-                        src="https://grofresh-admin.6amtech.com/storage/app/public/category/2023-03-25-641e78b045dad.png"
-                        class="img--50 ml-3" alt="Category">
-                    </td>
-                    <td>
-                      <span class="d-block font-size-sm text-body text-trim-50">
-                        Fruits and Vegetables
-                      </span>
-                    </td>
-                    <td>
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                          checked />
+                  <% cat.forEach(function(item) { %>
+                    <tr>
 
-                      </div>
 
-                    </td>
-                    <td>
-                      <div class="max-85">
-                        <select name="priority" class="custom-select">
-                          <option value="1" selected="">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                        </select>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="btn--container justify-content-center">
-                        <a class="action-btn" href="">
-                          <i class="fa-solid fa-pen  text-primary"></i></a>
-                        <a class="action-btn text-danger form-alert" href="" data-message="Want to delete this?">
-                          <i class="fa-solid fa-trash"></i>
-                        </a>
-                      </div>
-                      <form action="https://grofresh-admin.6amtech.com/admin/category/delete/1" method="post"
-                        id="category-1">
-                        <input type="hidden" name="_token" value="1tvumO54sfGx6nXptASOz8g8fz7rBHr5dGiyyu0A"
-                          autocomplete="off"> <input type="hidden" name="_method" value="delete">
-                      </form>
-                    </td>
-                  </tr>
+
+
+
+                      <td class="text-center">1</td>
+                      <td>
+                        <img src="uploads/<%= item.categoryimage  %>" class="img--50 ml-3" alt="Category">
+                      </td>
+                      <td>
+                        <span class="d-block font-size-sm text-body text-trim-50">
+                          <%= item.name %>
+                        </span>
+                      </td>
+                      <td>
+                        <div class="form-check form-switch">
+                          <% if(item.status=="active" ){ %>
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                              checked />
+                            <% } else { %>
+                              <input class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked" />
+                              <% } %>
+
+                        </div>
+
+                      </td>
+                      <td>
+                        <div class="max-85">
+                          <select name="priority" class="custom-select">
+                            <option value="1" selected="">
+                              <%= item.priority %>
+                            </option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="btn--container justify-content-center">
+                          <a class="action-btn" href="">
+                            <i class="fa-solid fa-pen  text-primary"></i></a>
+
+
+                          <form onsubmit="return Category_delete(event,'<%=item.id%>')">
+                            <button class="action-btn text-danger form-alert">
+
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                          </form>
+                        </div>
+                        <form action="https://grofresh-admin.6amtech.com/admin/category/delete/1" method="post"
+                          id="category-1">
+                          <input type="hidden" name="_token" value="1tvumO54sfGx6nXptASOz8g8fz7rBHr5dGiyyu0A"
+                            autocomplete="off"> <input type="hidden" name="_method" value="delete">
+                        </form>
+                      </td>
+                    </tr>
+                    <% }); %>
                 </tbody>
               </table>
 
@@ -359,6 +378,64 @@
         jQuery(this).val('');
       });
     });
+
+    $("#form").on("submit", function (e) {
+      e.preventDefault();
+
+      var formData = new FormData(this);
+      // var formData={}
+
+      // $('#form').serializeArray().forEach(function (item) {
+      //                 formData[item.name] = item.value;
+      //             });
+
+      $.ajax({
+        url: '/category',
+        type: 'POST',
+        data: formData,
+        // data: formData,
+        processData: false,  // Required to send FormData
+        contentType: false,  // Required to set the correct header
+        success: function (response) {
+          console.log('Success:', response);
+        },
+        error: function (xhr, status, error) {
+          // console.log('Error:', error,status,xhr);
+          $("#name_error").text(xhr.responseJSON.error)
+        }
+      });
+
+
+    })
+
+
+    function Category_delete(e, id, method, url) {
+      console.log(id);
+      e.preventDefault();
+      var formData = {
+        "id": id
+      }
+
+      $.ajax({
+        url: '/category',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        // data: formData,
+        processData: false,  // Required to send FormData
+        // contentType: false,  // Required to set the correct header
+        success: function (response) {
+          console.log('Success:', response);
+        },
+        error: function (xhr, status, error) {
+          // console.log('Error:', error,status,xhr);
+          $("#name_error").text(xhr.responseJSON.error)
+        }
+      });
+
+
+      return false;
+    }
   </script>
 
 
